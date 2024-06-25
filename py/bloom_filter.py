@@ -57,7 +57,6 @@ def check_word(word):
     if not found:
         print(f"'{word}' is not in any collection")
 
-# Example words to check
 words_to_check = ["Bloom", "filter", "larger", "element", "irakli", "definitely", "not", "bla", "ahaaa", "Bloon"]
 
 for word in words_to_check:
