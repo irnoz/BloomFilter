@@ -103,7 +103,7 @@ int main() {
         collections[index].add(word);
     }
 
-    std::vector<std::string> words_to_check = {"Bloom", "filter", "larger", "element", "irakli", "definitely", "not", "bla", "ahaaa"};
+    std::vector<std::string> words_to_check = {"Bloom", "filter", "larger", "element", "irakli", "definitely", "not", "bla", "ahaaa", "bloom"};
 
     for (const auto& word : words_to_check) {
         check_word(word, collections);
