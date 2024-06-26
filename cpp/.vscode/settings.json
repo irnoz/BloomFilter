@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        ".fantomasignore": "ignore",
+        "__hash_table": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp"
+    }
+}

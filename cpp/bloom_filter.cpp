@@ -2,11 +2,9 @@
 #include <vector>
 #include <string>
 #include <fstream>
-#include <sstream>
 #include <unordered_set>
 #include <bitset>
 #include <random>
-#include <functional>
 #include <ctime>
 
 const int BLOOM_FILTER_SIZE = 500;
@@ -14,18 +12,23 @@ const int HASH_COUNT = 7;
 
 class BloomFilter {
 public:
-    BloomFilter() : bit_array(BLOOM_FILTER_SIZE) {}
+    BloomFilter() : bit_array(BLOOM_FILTER_SIZE) {
+        std::random_device rd;
+        for (int i = 0; i < HASH_COUNT; ++i) {
+            hash_seeds.push_back(rd());
+        }
+    }
 
     void add(const std::string& item) {
-        for (int i = 0; i < HASH_COUNT; ++i) {
-            size_t hash_value = hash_function(item + std::to_string(i));
+        for (const auto& seed : hash_seeds) {
+            size_t hash_value = hash_function(item, seed);
             bit_array[hash_value % BLOOM_FILTER_SIZE] = true;
         }
     }
 
     bool check(const std::string& item) const {
-        for (int i = 0; i < HASH_COUNT; ++i) {
-            size_t hash_value = hash_function(item + std::to_string(i));
+        for (const auto& seed : hash_seeds) {
+            size_t hash_value = hash_function(item, seed);
             if (!bit_array[hash_value % BLOOM_FILTER_SIZE]) {
                 return false;
             }
@@ -35,7 +38,12 @@ public:
 
 private:
     std::bitset<BLOOM_FILTER_SIZE> bit_array;
-    std::hash<std::string> hash_function;
+    std::vector<size_t> hash_seeds;
+
+    size_t hash_function(const std::string& item, size_t seed) const {
+        std::hash<std::string> hasher;
+        return hasher(item + std::to_string(seed));
+    }
 };
 
 class ElementCollection {
