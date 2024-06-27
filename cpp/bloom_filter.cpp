@@ -53,11 +53,12 @@ public:
         bloom_filter.add(item);
     }
 
-    bool check(const std::string& item) const {
-        if (bloom_filter.check(item)) {
-            return elements.find(item) != elements.end();
-        }
-        return false;
+    bool check_bloom(const std::string& item) const {
+        return bloom_filter.check(item);
+    }
+
+    bool check_set(const std::string& item) const {
+        return elements.find(item) != elements.end();
     }
 
 private:
@@ -83,10 +84,12 @@ std::vector<std::string> read_words_from_file(const std::string& filename) {
 void check_word(const std::string& word, const std::vector<ElementCollection>& collections) {
     bool found = false;
     for (size_t i = 0; i < collections.size(); ++i) {
-        if (collections[i].check(word)) {
+        if (collections[i].check_bloom(word)) {
             found = true;
             std::cout << "'" << word << "' is possibly in collection " << i + 1 << std::endl;
-            if (collections[i].check(word)) {
+
+            // Actual check in the unordered_set
+            if (collections[i].check_set(word)) {
                 std::cout << "'" << word << "' is actually in collection " << i + 1 << std::endl;
             } else {
                 std::cout << "'" << word << "' is a false positive in collection " << i + 1 << std::endl;
