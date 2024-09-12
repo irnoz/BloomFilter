@@ -88,7 +88,6 @@ void check_word(const std::string& word, const std::vector<ElementCollection>& c
             found = true;
             std::cout << "'" << word << "' is possibly in collection " << i + 1 << std::endl;
 
-            // Actual check in the unordered_set
             if (collections[i].check_set(word)) {
                 std::cout << "'" << word << "' is actually in collection " << i + 1 << std::endl;
             } else {
